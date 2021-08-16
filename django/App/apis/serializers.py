@@ -13,16 +13,8 @@ class UserSerializer(serializers.ModelSerializer):
 class RbSerializer(serializers.ModelSerializer):
     class Meta:
         fields = (
+            'email',
             'rb_id',
             'rb_password'
         )
         model = models.RASPBERRY
-
-class VideoSerializer(serializers.ModelSerializer):
-    class Meta:
-        fields = (
-            'video_id',
-            'video_file',
-            'video_date'
-        )
-        model = models.VIDEO

@@ -1,5 +1,5 @@
 <manifest xmlns:android="http://schemas.android.com/apk/res/android"
-    package="com.example.pixie">
+    package="com.pixie.android">
    <application
         android:label="pixie"
         android:icon="@mipmap/ic_launcher">

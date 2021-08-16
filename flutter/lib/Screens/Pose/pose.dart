@@ -1,13 +1,13 @@
 import 'package:flutter/material.dart';
-import 'package:pixie/Screens/Main/components/body.dart';
-import 'package:pixie/Screens/Pose/pose.dart';
+import 'package:pixie/Screens/Main/main.dart';
 import 'package:pixie/Screens/Report/report.dart';
+import 'package:pixie/Screens/Pose/components/body.dart';
 import 'package:pixie/Screens/Video/video.dart';
 import 'package:pixie/Screens/Welcome/welcome_screen.dart';
 import 'package:pixie/constants.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 
-class MainScreen extends StatelessWidget {
+class PoseScreen extends StatelessWidget {
   Future<void> storeLogout() async {
     SharedPreferences prefs = await SharedPreferences.getInstance();
 
@@ -44,7 +44,7 @@ class MainScreen extends StatelessWidget {
         ),
         ListTile(
           title: Text("라즈베리파이 등록",
-              style: TextStyle(fontWeight: FontWeight.bold, fontSize: 16)),
+              style: TextStyle(fontWeight: FontWeight.bold, fontSize: 20)),
           onTap: () {
             Navigator.of(context).pushAndRemoveUntil(
                 MaterialPageRoute(
@@ -53,14 +53,9 @@ class MainScreen extends StatelessWidget {
                 (Route<dynamic> route) => false);
           },
         ),
-        Container(
-          height: 1,
-          width: double.maxFinite,
-          color: Colors.grey,
-        ),
         ListTile(
           title: Text("YOLOv5 영상 확인",
-              style: TextStyle(fontWeight: FontWeight.bold, fontSize: 16)),
+              style: TextStyle(fontWeight: FontWeight.bold, fontSize: 20)),
           onTap: () {
             Navigator.of(context).pushAndRemoveUntil(
                 MaterialPageRoute(
@@ -69,14 +64,9 @@ class MainScreen extends StatelessWidget {
                 (Route<dynamic> route) => false);
           },
         ),
-        Container(
-          height: 1,
-          width: double.maxFinite,
-          color: Colors.grey,
-        ),
         ListTile(
           title: Text("OpenPose 영상 확인",
-              style: TextStyle(fontWeight: FontWeight.bold, fontSize: 16)),
+              style: TextStyle(fontWeight: FontWeight.bold, fontSize: 20)),
           onTap: () {
             Navigator.of(context).pushAndRemoveUntil(
                 MaterialPageRoute(
@@ -85,14 +75,9 @@ class MainScreen extends StatelessWidget {
                 (Route<dynamic> route) => false);
           },
         ),
-        Container(
-          height: 1,
-          width: double.maxFinite,
-          color: Colors.grey,
-        ),
         ListTile(
           title: Text("쓰레기 무단 투기 신고",
-              style: TextStyle(fontWeight: FontWeight.bold, fontSize: 16)),
+              style: TextStyle(fontWeight: FontWeight.bold, fontSize: 20)),
           onTap: () {
             Navigator.of(context).pushAndRemoveUntil(
                 MaterialPageRoute(
@@ -101,14 +86,9 @@ class MainScreen extends StatelessWidget {
                 (Route<dynamic> route) => false);
           },
         ),
-        Container(
-          height: 1,
-          width: double.maxFinite,
-          color: Colors.grey,
-        ),
         ListTile(
           title: Text("로그아웃",
-              style: TextStyle(fontWeight: FontWeight.bold, fontSize: 16)),
+              style: TextStyle(fontWeight: FontWeight.bold, fontSize: 20)),
           onTap: () {
             storeLogout();
             Navigator.of(context).pushAndRemoveUntil(

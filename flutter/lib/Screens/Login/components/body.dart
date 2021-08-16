@@ -10,6 +10,7 @@ import 'package:pixie/components/rounded_password_field.dart';
 import 'package:pixie/models/user.dart';
 import 'package:provider/provider.dart';
 import 'package:fluttertoast/fluttertoast.dart';
+import 'package:shared_preferences/shared_preferences.dart';
 
 class Body extends StatelessWidget {
   const Body({
@@ -22,6 +23,7 @@ class Body extends StatelessWidget {
     for (int i = 0; i < userP.users.length; i++) {
       if ((user.email.compareTo(userP.users[i].email) == 0) &&
           (user.password.compareTo(userP.users[i].password) == 0)) {
+        storeLogin(user.email);
         Navigator.of(context).pushAndRemoveUntil(
             MaterialPageRoute(
               builder: (context) => MainScreen(),
@@ -43,6 +45,13 @@ class Body extends StatelessWidget {
     }
   }
 
+  Future<void> storeLogin(String email) async {
+    SharedPreferences prefs = await SharedPreferences.getInstance();
+
+    prefs.setBool('loginStatus', true);
+    prefs.setString('account', email);
+  }
+
   @override
   Widget build(BuildContext context) {
     User user = User(username: "", email: "", password: "");
@@ -54,13 +63,13 @@ class Body extends StatelessWidget {
           mainAxisAlignment: MainAxisAlignment.center,
           children: <Widget>[
             Text(
-              "LOGIN",
+              "로그인",
               style: TextStyle(fontWeight: FontWeight.bold, fontSize: 25),
             ),
             SizedBox(height: size.height * 0.03),
             SizedBox(height: size.height * 0.03),
             RoundedInputField(
-              hintText: "Your Email",
+              hintText: "Email",
               onChanged: (value) {
                 user = User(
                     username: value, email: value, password: user.password);
@@ -75,7 +84,7 @@ class Body extends StatelessWidget {
               },
             ),
             RoundedButton(
-              text: "LOGIN",
+              text: "로그인",
               press: () {
                 checkUser(userP, user, context);
               },

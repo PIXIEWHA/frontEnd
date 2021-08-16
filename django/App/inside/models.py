@@ -13,11 +13,12 @@ class USER(AbstractUser):
         return self.email
 
 class RASPBERRY(models.Model):
+    email = models.EmailField(max_length=200, unique=True)
     rb_id = models.CharField(max_length=200)
     rb_password = models.CharField(max_length=200)
 
     def __str__(self):
-        return self.rb_id
+        return self.email
 
 class VIDEO(models.Model):
     video_id = models.CharField(max_length=200)

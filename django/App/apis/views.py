@@ -5,7 +5,6 @@ from rest_framework import generics
 from inside import models
 from .serializers import UserSerializer
 from .serializers import RbSerializer
-from .serializers import VideoSerializer
 
 class ListUser(generics.ListCreateAPIView):
     queryset = models.USER.objects.all()
@@ -14,7 +13,3 @@ class ListUser(generics.ListCreateAPIView):
 class ListRb(generics.ListCreateAPIView):
     queryset = models.RASPBERRY.objects.all()
     serializer_class = RbSerializer
-
-class ListVideo(generics.ListCreateAPIView):
-    queryset = models.VIDEO.objects.all()
-    serializer_class = VideoSerializer

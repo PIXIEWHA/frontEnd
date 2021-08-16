@@ -65,7 +65,7 @@ class RbProvider with ChangeNotifier {
         headers: {"Content-Type": "application/json"},
         body: json.encode(rb));
     if (response.statusCode == 201) {
-      rb.rb_id = json.decode(response.body)['rb_id'];
+      rb.email = json.decode(response.body)['email'];
       _rbs.add(rb);
       notifyListeners();
     }
@@ -73,7 +73,7 @@ class RbProvider with ChangeNotifier {
 
   void deleteRb(Rb rb) async {
     final response = await http
-        .delete(Uri.parse('http://10.0.2.2:8000/apis/rbpi/${rb.rb_id}/'));
+        .delete(Uri.parse('http://10.0.2.2:8000/apis/rbpi/${rb.email}/'));
     if (response.statusCode == 204) {
       _rbs.remove(rb);
       notifyListeners();

@@ -3,8 +3,6 @@ import 'package:fluttertoast/fluttertoast.dart';
 import 'package:pixie/Screens/Login/login_screen.dart';
 import 'package:pixie/Screens/Main/main.dart';
 import 'package:pixie/Screens/Signup/components/background.dart';
-import 'package:pixie/Screens/Signup/components/or_divider.dart';
-import 'package:pixie/Screens/Signup/components/social_icon.dart';
 import 'package:pixie/api/api.dart';
 import 'package:pixie/components/already_have_an_account_acheck.dart';
 import 'package:pixie/components/rounded_button.dart';
@@ -12,6 +10,7 @@ import 'package:pixie/components/rounded_input_field.dart';
 import 'package:pixie/components/rounded_password_field.dart';
 import 'package:pixie/models/user.dart';
 import 'package:provider/provider.dart';
+import 'package:shared_preferences/shared_preferences.dart';
 
 class Body extends StatelessWidget {
   void checkDouble(UserProvider userP, User user, BuildContext context) {
@@ -33,12 +32,20 @@ class Body extends StatelessWidget {
     }
     if (!check) {
       userP.addUser(user);
+      storeLogin(user.email);
       Navigator.of(context).pushAndRemoveUntil(
           MaterialPageRoute(
             builder: (context) => MainScreen(),
           ),
           (Route<dynamic> route) => false);
     }
+  }
+
+  Future<void> storeLogin(String email) async {
+    SharedPreferences prefs = await SharedPreferences.getInstance();
+
+    prefs.setBool('loginStatus', true);
+    prefs.setString('account', email);
   }
 
   @override
@@ -53,12 +60,12 @@ class Body extends StatelessWidget {
           children: <Widget>[
             SizedBox(height: size.height * 0.07),
             Text(
-              "SIGNUP",
+              "회원가입",
               style: TextStyle(fontWeight: FontWeight.bold, fontSize: 25),
             ),
             SizedBox(height: size.height * 0.03),
             RoundedInputField(
-              hintText: "Your Email",
+              hintText: "Email",
               onChanged: (value) {
                 user = User(
                     username: value, email: value, password: user.password);
@@ -73,7 +80,7 @@ class Body extends StatelessWidget {
               },
             ),
             RoundedButton(
-              text: "SIGNUP",
+              text: "회원가입",
               press: () {
                 checkDouble(userP, user, context);
               },

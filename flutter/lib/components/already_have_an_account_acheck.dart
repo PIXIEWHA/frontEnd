@@ -16,7 +16,7 @@ class AlreadyHaveAnAccountCheck extends StatelessWidget {
       mainAxisAlignment: MainAxisAlignment.center,
       children: <Widget>[
         Text(
-          login ? "Don’t have an Account ? " : "Already have an Account ? ",
+          login ? "계정이 없으신가요? " : "이미 계정이 있으신가요? ",
           style: TextStyle(color: kPrimaryColor),
         ),
         GestureDetector(
@@ -24,7 +24,7 @@ class AlreadyHaveAnAccountCheck extends StatelessWidget {
             press();
           },
           child: Text(
-            login ? "Sign Up" : "Sign In",
+            login ? "회원가입" : "로그인",
             style: TextStyle(
               color: kPrimaryColor,
               fontWeight: FontWeight.bold,
