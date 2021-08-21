@@ -31,14 +31,10 @@ class _Body extends State<Body> {
     });
   }
 
-  Future<void> checkNull(RbProvider rbP, Rb rbip, BuildContext context) async {
-    SharedPreferences prefs = await SharedPreferences.getInstance();
-    rbip.rb_id = prefs.getString('rb_id')!;
-    if (!checkEmpty) {
+  void checkNull(RbProvider rbP, Rb rbip, BuildContext context) {
+    if ((!checkEmpty) && (rbip.rb_id.compareTo("") != 0)) {
       rbP.addRb(rbip);
       setState(() {
-        rbip =
-            Rb(email: rbip.email, rb_id: ipTemp, rb_password: rbip.rb_password);
         storeRb(rbip.rb_id);
       });
       Fluttertoast.showToast(
@@ -124,6 +120,7 @@ class _Body extends State<Body> {
               text: "등록",
               press: () {
                 setState(() {
+                  rbip.rb_id = ipTemp;
                   checkNull(rbP, rbip, context);
                 });
               },

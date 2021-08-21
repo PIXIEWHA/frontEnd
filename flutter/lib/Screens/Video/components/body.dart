@@ -29,13 +29,8 @@ class Body extends StatelessWidget {
     return Background(
       child: SingleChildScrollView(
         child: Column(
-          mainAxisAlignment: MainAxisAlignment.center,
+          mainAxisAlignment: MainAxisAlignment.start,
           children: <Widget>[
-            AppBar(
-              title: Text("YOLOv5 영상 확인"),
-              centerTitle: true,
-              backgroundColor: kPrimaryColor,
-            ),
             FutureBuilder<List<FirebaseFile>>(
               future: getIP(),
               builder: (context, snapshot) {
@@ -56,9 +51,11 @@ class Body extends StatelessWidget {
                           child: Column(
                               crossAxisAlignment: CrossAxisAlignment.start,
                               children: [
+                                SizedBox(height: size.height * 0.12),
                                 buildHeader(files.length),
                                 Expanded(
                                   child: ListView.builder(
+                                    padding: EdgeInsets.zero,
                                     itemCount: files.length,
                                     itemBuilder: (context, index) {
                                       final file = files[index];

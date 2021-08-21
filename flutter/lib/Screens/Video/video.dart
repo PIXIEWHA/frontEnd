@@ -27,6 +27,12 @@ class VideoScreen extends StatelessWidget {
   Widget build(BuildContext context) {
     Size size = MediaQuery.of(context).size;
     return Scaffold(
+      extendBodyBehindAppBar: true,
+      appBar: AppBar(
+        title: Text("YOLOv5 영상 확인"),
+        centerTitle: true,
+        backgroundColor: kPrimaryColor,
+      ),
       body: Body(),
       drawer: Drawer(
           child: ListView(children: <Widget>[

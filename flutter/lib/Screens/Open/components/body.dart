@@ -1,5 +1,3 @@
-import 'dart:io';
-
 import 'package:flutter/material.dart';
 import 'package:fluttertoast/fluttertoast.dart';
 import 'package:pixie/Screens/Open/components/background.dart';
@@ -8,6 +6,7 @@ import 'package:pixie/components/rounded_button.dart';
 import 'package:pixie/constants.dart';
 import 'package:pixie/models/report.dart';
 import 'package:provider/provider.dart';
+import 'package:shared_preferences/shared_preferences.dart';
 
 class Body extends StatefulWidget {
   const Body({
@@ -27,6 +26,7 @@ class _Body extends State<Body> {
   bool checkEmpty6 = true;
 
   Report rp = Report(
+    email: "",
     key: "0",
     username: "",
     telno: "",
@@ -35,14 +35,32 @@ class _Body extends State<Body> {
     pointX: "0",
     pointY: "0",
     rtn_addr: "",
-    upfile: new File(""),
-    upfile2: new File(""),
-    upfile3: new File(""),
+    upfile: "",
+    upfile2: "0",
+    upfile3: "0",
     citizen_img_wdate: "",
     citizen_img_wdate2: "0",
     citizen_img_wdate3: "0",
     device: "pixie",
   );
+
+  Future<String> getAccount() async {
+    SharedPreferences prefs = await SharedPreferences.getInstance();
+    String? account = prefs.getString('account');
+
+    if (account != null) {
+      return account;
+    }
+    return "";
+  }
+
+  void func() {
+    getAccount().then((value) {
+      setState(() {
+        rp.email = value;
+      });
+    });
+  }
 
   void uploadReport(BuildContext context) {
     final reportP = Provider.of<ReportProvider>(context, listen: false);
@@ -52,7 +70,7 @@ class _Body extends State<Body> {
         (!checkEmpty4) &&
         (!checkEmpty5) &&
         (!checkEmpty6)) {
-      //reportP.addReport(rp);
+      reportP.addReport(rp);
       Fluttertoast.showToast(
           msg: "무단 투기가 신고되었습니다.",
           toastLength: Toast.LENGTH_LONG,
@@ -76,6 +94,7 @@ class _Body extends State<Body> {
   @override
   Widget build(BuildContext context) {
     Size size = MediaQuery.of(context).size;
+    func();
     return Background(
       child: SingleChildScrollView(
         child: Column(
@@ -102,23 +121,29 @@ class _Body extends State<Body> {
                 color: kPrimaryLightColor,
                 borderRadius: BorderRadius.circular(10),
               ),
-              child: TextField(
-                onChanged: (value) {
-                  if (value.compareTo("") == 0) {
-                    setState(() {
-                      checkEmpty1 = true;
-                    });
-                  } else {
-                    setState(() {
-                      checkEmpty1 = false;
-                      rp.username = value;
-                    });
-                  }
-                },
-                cursorColor: kPrimaryColor,
-                decoration: InputDecoration(
-                  hintText: "",
-                  border: InputBorder.none,
+              child: new ConstrainedBox(
+                constraints: BoxConstraints(
+                  maxHeight: 300.0,
+                ),
+                child: TextField(
+                  onChanged: (value) {
+                    if (value.compareTo("") == 0) {
+                      setState(() {
+                        checkEmpty1 = true;
+                      });
+                    } else {
+                      setState(() {
+                        checkEmpty1 = false;
+                        rp.username = value;
+                      });
+                    }
+                  },
+                  cursorColor: kPrimaryColor,
+                  decoration: InputDecoration(
+                    hintText: "",
+                    border: InputBorder.none,
+                  ),
+                  maxLines: null,
                 ),
               ),
             ),
@@ -138,23 +163,29 @@ class _Body extends State<Body> {
                 color: kPrimaryLightColor,
                 borderRadius: BorderRadius.circular(10),
               ),
-              child: TextField(
-                onChanged: (value) {
-                  if (value.compareTo("") == 0) {
-                    setState(() {
-                      checkEmpty2 = true;
-                    });
-                  } else {
-                    setState(() {
-                      checkEmpty2 = false;
-                      rp.telno = value;
-                    });
-                  }
-                },
-                cursorColor: kPrimaryColor,
-                decoration: InputDecoration(
-                  hintText: "",
-                  border: InputBorder.none,
+              child: new ConstrainedBox(
+                constraints: BoxConstraints(
+                  maxHeight: 300.0,
+                ),
+                child: TextField(
+                  onChanged: (value) {
+                    if (value.compareTo("") == 0) {
+                      setState(() {
+                        checkEmpty2 = true;
+                      });
+                    } else {
+                      setState(() {
+                        checkEmpty2 = false;
+                        rp.telno = value;
+                      });
+                    }
+                  },
+                  cursorColor: kPrimaryColor,
+                  decoration: InputDecoration(
+                    hintText: "",
+                    border: InputBorder.none,
+                  ),
+                  maxLines: null,
                 ),
               ),
             ),
@@ -164,6 +195,7 @@ class _Body extends State<Body> {
                 alignment: Alignment.centerLeft,
                 child: Text(
                   "신고내용",
+                  maxLines: 5,
                   style: TextStyle(fontWeight: FontWeight.bold, fontSize: 20),
                 )),
             Container(
@@ -174,23 +206,29 @@ class _Body extends State<Body> {
                 color: kPrimaryLightColor,
                 borderRadius: BorderRadius.circular(10),
               ),
-              child: TextField(
-                onChanged: (value) {
-                  if (value.compareTo("") == 0) {
-                    setState(() {
-                      checkEmpty3 = true;
-                    });
-                  } else {
-                    setState(() {
-                      checkEmpty3 = false;
-                      rp.content = value;
-                    });
-                  }
-                },
-                cursorColor: kPrimaryColor,
-                decoration: InputDecoration(
-                  hintText: "",
-                  border: InputBorder.none,
+              child: new ConstrainedBox(
+                constraints: BoxConstraints(
+                  maxHeight: 300.0,
+                ),
+                child: TextField(
+                  onChanged: (value) {
+                    if (value.compareTo("") == 0) {
+                      setState(() {
+                        checkEmpty3 = true;
+                      });
+                    } else {
+                      setState(() {
+                        checkEmpty3 = false;
+                        rp.content = value;
+                      });
+                    }
+                  },
+                  cursorColor: kPrimaryColor,
+                  decoration: InputDecoration(
+                    hintText: "",
+                    border: InputBorder.none,
+                  ),
+                  maxLines: null,
                 ),
               ),
             ),
@@ -210,23 +248,29 @@ class _Body extends State<Body> {
                 color: kPrimaryLightColor,
                 borderRadius: BorderRadius.circular(10),
               ),
-              child: TextField(
-                onChanged: (value) {
-                  if (value.compareTo("") == 0) {
-                    setState(() {
-                      checkEmpty5 = true;
-                    });
-                  } else {
-                    setState(() {
-                      checkEmpty4 = false;
-                      rp.rtn_addr = value;
-                    });
-                  }
-                },
-                cursorColor: kPrimaryColor,
-                decoration: InputDecoration(
-                  hintText: "",
-                  border: InputBorder.none,
+              child: new ConstrainedBox(
+                constraints: BoxConstraints(
+                  maxHeight: 300.0,
+                ),
+                child: TextField(
+                  onChanged: (value) {
+                    if (value.compareTo("") == 0) {
+                      setState(() {
+                        checkEmpty4 = true;
+                      });
+                    } else {
+                      setState(() {
+                        checkEmpty4 = false;
+                        rp.rtn_addr = value;
+                      });
+                    }
+                  },
+                  cursorColor: kPrimaryColor,
+                  decoration: InputDecoration(
+                    hintText: "",
+                    border: InputBorder.none,
+                  ),
+                  maxLines: null,
                 ),
               ),
             ),
@@ -246,23 +290,29 @@ class _Body extends State<Body> {
                 color: kPrimaryLightColor,
                 borderRadius: BorderRadius.circular(10),
               ),
-              child: TextField(
-                onChanged: (value) {
-                  if (value.compareTo("") == 0) {
-                    setState(() {
-                      checkEmpty5 = true;
-                    });
-                  } else {
-                    setState(() {
-                      checkEmpty5 = false;
-                      rp.upfile = new File(value);
-                    });
-                  }
-                },
-                cursorColor: kPrimaryColor,
-                decoration: InputDecoration(
-                  hintText: "",
-                  border: InputBorder.none,
+              child: new ConstrainedBox(
+                constraints: BoxConstraints(
+                  maxHeight: 300.0,
+                ),
+                child: TextField(
+                  onChanged: (value) {
+                    if (value.compareTo("") == 0) {
+                      setState(() {
+                        checkEmpty5 = true;
+                      });
+                    } else {
+                      setState(() {
+                        checkEmpty5 = false;
+                        rp.upfile = value;
+                      });
+                    }
+                  },
+                  cursorColor: kPrimaryColor,
+                  decoration: InputDecoration(
+                    hintText: "",
+                    border: InputBorder.none,
+                  ),
+                  maxLines: null,
                 ),
               ),
             ),
@@ -282,23 +332,29 @@ class _Body extends State<Body> {
                 color: kPrimaryLightColor,
                 borderRadius: BorderRadius.circular(10),
               ),
-              child: TextField(
-                onChanged: (value) {
-                  if (value.compareTo("") == 0) {
-                    setState(() {
-                      checkEmpty6 = true;
-                    });
-                  } else {
-                    setState(() {
-                      checkEmpty6 = false;
-                      rp.citizen_img_wdate = value;
-                    });
-                  }
-                },
-                cursorColor: kPrimaryColor,
-                decoration: InputDecoration(
-                  hintText: "",
-                  border: InputBorder.none,
+              child: new ConstrainedBox(
+                constraints: BoxConstraints(
+                  maxHeight: 300.0,
+                ),
+                child: TextField(
+                  onChanged: (value) {
+                    if (value.compareTo("") == 0) {
+                      setState(() {
+                        checkEmpty6 = true;
+                      });
+                    } else {
+                      setState(() {
+                        checkEmpty6 = false;
+                        rp.citizen_img_wdate = value;
+                      });
+                    }
+                  },
+                  cursorColor: kPrimaryColor,
+                  decoration: InputDecoration(
+                    hintText: "",
+                    border: InputBorder.none,
+                  ),
+                  maxLines: null,
                 ),
               ),
             ),

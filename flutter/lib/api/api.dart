@@ -1,5 +1,7 @@
 import 'dart:convert';
+import 'dart:io';
 import 'package:flutter/material.dart';
+import 'package:pixie/models/reportweb.dart';
 import '../models/report.dart';
 import '../models/rb.dart';
 import '../models/user.dart';
@@ -96,6 +98,7 @@ class RbProvider with ChangeNotifier {
 class ReportProvider with ChangeNotifier {
   ReportProvider() {
     this.fetchreport();
+    this.fetchreportWeb();
   }
 
   List<Report> _reports = [];
@@ -104,21 +107,27 @@ class ReportProvider with ChangeNotifier {
     return [..._reports];
   }
 
+  List<ReportWeb> _reportsWeb = [];
+
+  List<ReportWeb> get reportsweb {
+    return [..._reportsWeb];
+  }
+
   void addReport(Report report) async {
     final response = await http.post(
-        Uri.parse('http://smartreport.seoul.go.kr/a800/a801.do'),
+        Uri.parse('http://10.0.2.2:8000/apis/report/'),
         headers: {"Content-Type": "application/json"},
         body: json.encode(report));
     if (response.statusCode == 201) {
-      report.key = json.decode(response.body)['key'];
+      report.username = json.decode(response.body)['username'];
       _reports.add(report);
       notifyListeners();
     }
   }
 
   void deleteReport(Report report) async {
-    final response = await http.delete(Uri.parse(
-        'http://smartreport.seoul.go.kr/a800/a801.do/${report.key}/'));
+    final response = await http
+        .delete(Uri.parse('http://10.0.2.2:8000/apis/report/${report.email}/'));
     if (response.statusCode == 204) {
       _reports.remove(report);
       notifyListeners();
@@ -126,13 +135,56 @@ class ReportProvider with ChangeNotifier {
   }
 
   fetchreport() async {
+    final Uri url = Uri.parse("http://10.0.2.2:8000/apis/report/?format=json");
+    final response = await http.get(url);
+
+    if (response.statusCode == 200) {
+      var data = json.decode(response.body) as List;
+      _reports = data.map<Report>((json) => Report.fromJson(json)).toList();
+      notifyListeners();
+    }
+  }
+
+  void addReportWeb(Report report) async {
+    ReportWeb rpw = ReportWeb(
+      email: report.email,
+      key: report.key,
+      username: report.username,
+      telno: report.telno,
+      content: report.content,
+      citizengroup: report.citizengroup,
+      pointX: report.pointX,
+      pointY: report.pointY,
+      rtn_addr: report.rtn_addr,
+      upfile: new File(report.upfile),
+      upfile2: new File(report.upfile2),
+      upfile3: new File(report.upfile3),
+      citizen_img_wdate: report.citizen_img_wdate,
+      citizen_img_wdate2: report.citizen_img_wdate2,
+      citizen_img_wdate3: report.citizen_img_wdate3,
+      device: report.device,
+    );
+
+    final response = await http.post(
+        Uri.parse('http://smartreport.seoul.go.kr/a800/a801.do'),
+        headers: {"Content-Type": "application/json"},
+        body: json.encode(rpw));
+    if (response.statusCode == 201) {
+      rpw.key = json.decode(response.body)['key'];
+      _reportsWeb.add(rpw);
+      notifyListeners();
+    }
+  }
+
+  fetchreportWeb() async {
     final Uri url =
         Uri.parse("http://smartreport.seoul.go.kr/a800/a801.do/?format=json");
     final response = await http.get(url);
 
     if (response.statusCode == 200) {
       var data = json.decode(response.body) as List;
-      _reports = data.map<Report>((json) => Report.fromJson(json)).toList();
+      _reportsWeb =
+          data.map<ReportWeb>((json) => ReportWeb.fromJson(json)).toList();
       notifyListeners();
     }
   }

@@ -1,6 +1,6 @@
 import 'dart:io';
 
-class Report {
+class ReportWeb {
   String email;
   String key;
   String username;
@@ -10,15 +10,15 @@ class Report {
   String pointX;
   String pointY;
   String rtn_addr;
-  String upfile;
-  String upfile2;
-  String upfile3;
+  File upfile;
+  File upfile2;
+  File upfile3;
   String citizen_img_wdate;
   String citizen_img_wdate2;
   String citizen_img_wdate3;
   String device;
 
-  Report(
+  ReportWeb(
       {required this.email,
       required this.key,
       required this.username,
@@ -36,8 +36,8 @@ class Report {
       required this.citizen_img_wdate3,
       required this.device});
 
-  factory Report.fromJson(Map<String, dynamic> json) {
-    return Report(
+  factory ReportWeb.fromJson(Map<String, dynamic> json) {
+    return ReportWeb(
       email: json['email'],
       key: json['key'],
       username: json['username'],

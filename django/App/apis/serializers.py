@@ -18,3 +18,24 @@ class RbSerializer(serializers.ModelSerializer):
             'rb_password'
         )
         model = models.RASPBERRY
+
+class ReportSerializer(serializers.ModelSerializer):
+    class Meta:
+        fields = (
+            "key",
+            "username",
+            "telno",
+            "content",
+            "citizengroup",
+            "pointX",
+            "pointY",
+            "rtn_addr",
+            "upfile",
+            "upfile2",
+            "upfile3",
+            "citizen_img_wdate",
+            "citizen_img_wdate2",
+            "citizen_img_wdate3",
+            "device"
+        )
+        model = models.REPORT
