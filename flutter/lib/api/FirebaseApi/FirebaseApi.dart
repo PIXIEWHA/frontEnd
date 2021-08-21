@@ -1,9 +1,7 @@
 import 'dart:io';
 import 'package:firebase_storage/firebase_storage.dart';
-import 'package:flutter/material.dart';
-import 'package:fluttertoast/fluttertoast.dart';
 import 'package:path_provider/path_provider.dart';
-import 'package:pixie/Screens/FirebaseApi/FirebaseFile.dart';
+import 'package:pixie/api/FirebaseApi/FirebaseFile.dart';
 
 class FirebaseApi {
   static Future<List<String>> _getDownloadLinks(List<Reference> refs) =>
@@ -44,16 +42,10 @@ class FirebaseApi {
   }
 
   static Future downloadFile(Reference ref) async {
+    FirebaseStorage firebase_storage = FirebaseStorage.instance;
     final dir = await getApplicationDocumentsDirectory();
     final file = File('${dir.path}/${ref.name}');
-    Fluttertoast.showToast(
-        msg: dir.path + '/' + ref.name,
-        toastLength: Toast.LENGTH_LONG,
-        gravity: ToastGravity.CENTER,
-        timeInSecForIosWeb: 1,
-        backgroundColor: Colors.red,
-        textColor: Colors.white,
-        fontSize: 16.0);
-    await ref.writeToFile(file);
+
+    await firebase_storage.ref(ref.fullPath).writeToFile(file);
   }
 }

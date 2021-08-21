@@ -9,18 +9,38 @@ import 'package:pixie/models/rb.dart';
 import 'package:provider/provider.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 
-// ignore: must_be_immutable
-class Body extends StatelessWidget {
+class Body extends StatefulWidget {
   const Body({
     Key? key,
   }) : super(key: key);
 
+  @override
+  _Body createState() => _Body();
+}
+
+class _Body extends State<Body> {
+  bool checkEmpty = true;
+  Rb rbip = Rb(email: "", rb_id: "", rb_password: "raspberry");
+  String ipTemp = "";
+
+  void func() {
+    getIP().then((value) {
+      setState(() {
+        rbip.rb_id = value;
+      });
+    });
+  }
+
   Future<void> checkNull(RbProvider rbP, Rb rbip, BuildContext context) async {
     SharedPreferences prefs = await SharedPreferences.getInstance();
     rbip.rb_id = prefs.getString('rb_id')!;
-
-    if (rbip.rb_id.compareTo("") != 0) {
+    if (!checkEmpty) {
       rbP.addRb(rbip);
+      setState(() {
+        rbip =
+            Rb(email: rbip.email, rb_id: ipTemp, rb_password: rbip.rb_password);
+        storeRb(rbip.rb_id);
+      });
       Fluttertoast.showToast(
           msg: "라즈베리파이 등록 성공",
           toastLength: Toast.LENGTH_LONG,
@@ -50,6 +70,15 @@ class Body extends StatelessWidget {
     return "";
   }
 
+  Future<String> getIP() async {
+    SharedPreferences prefs = await SharedPreferences.getInstance();
+    String? rb_id = prefs.getString('rb_id');
+    if (rb_id != null) {
+      return rb_id;
+    }
+    return "";
+  }
+
   Future<void> storeRb(String rb_id) async {
     SharedPreferences prefs = await SharedPreferences.getInstance();
 
@@ -58,7 +87,7 @@ class Body extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    Rb rbip = Rb(email: "", rb_id: "", rb_password: "raspberry");
+    func();
     final rbP = Provider.of<RbProvider>(context, listen: false);
     Size size = MediaQuery.of(context).size;
     return Background(
@@ -77,19 +106,26 @@ class Body extends StatelessWidget {
             ),
             SizedBox(height: size.height * 0.05),
             RoundedInputField(
-              hintText: "Raspberry Pi IP",
+              hintText: "Raspberry IP: " + rbip.rb_id,
               onChanged: (value) {
-                rbip = Rb(
-                    email: rbip.email,
-                    rb_id: value,
-                    rb_password: rbip.rb_password);
-                storeRb(value);
+                if (value.compareTo("") == 0) {
+                  setState(() {
+                    checkEmpty = true;
+                  });
+                } else {
+                  setState(() {
+                    checkEmpty = false;
+                    ipTemp = value;
+                  });
+                }
               },
             ),
             RoundedButton(
               text: "등록",
               press: () {
-                checkNull(rbP, rbip, context);
+                setState(() {
+                  checkNull(rbP, rbip, context);
+                });
               },
             ),
             FutureBuilder<String>(
@@ -99,7 +135,7 @@ class Body extends StatelessWidget {
                     rbip.email = snapshot.data!;
                   }
                   return SizedBox(height: 0);
-                })
+                }),
           ],
         ),
       ),

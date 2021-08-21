@@ -1,20 +1,22 @@
 import 'package:flutter/material.dart';
-import 'package:pixie/Screens/FirebaseApi/FirebaseApi.dart';
-import 'package:pixie/Screens/FirebaseApi/FirebaseFile.dart';
-import 'package:pixie/Screens/FirebaseApi/ImagePage.dart';
+import 'package:pixie/api/FirebaseApi/FirebaseApi.dart';
+import 'package:pixie/api/FirebaseApi/FirebaseFile.dart';
+import 'package:pixie/api/FirebaseApi/ImagePage.dart';
 import 'package:pixie/Screens/Main/components/background.dart';
 import 'package:pixie/constants.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 
 // ignore: must_be_immutable
 class Body extends StatelessWidget {
-  Future<String> getAccount() async {
+  get future => null;
+
+  Future<List<FirebaseFile>> getIP() async {
     SharedPreferences prefs = await SharedPreferences.getInstance();
-    String? account = prefs.getString('account');
-    if (account != null) {
-      return account;
+    String? rb_id = prefs.getString('rb_id');
+    if (rb_id != null) {
+      return FirebaseApi.listAll('/' + rb_id);
     }
-    return "";
+    return FirebaseApi.listAll('/');
   }
 
   const Body({
@@ -23,8 +25,6 @@ class Body extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    Future<List<FirebaseFile>> futureFiles =
-        FirebaseApi.listAll('/' + getAccount().toString());
     Size size = MediaQuery.of(context).size;
     return Background(
       child: SingleChildScrollView(
@@ -36,7 +36,7 @@ class Body extends StatelessWidget {
               backgroundColor: kPrimaryColor,
             ),
             FutureBuilder<List<FirebaseFile>>(
-              future: futureFiles,
+              future: getIP(),
               builder: (context, snapshot) {
                 switch (snapshot.connectionState) {
                   case ConnectionState.waiting:
@@ -81,10 +81,7 @@ class Body extends StatelessWidget {
         title: Text(
           file.name,
           style: TextStyle(
-            fontWeight: FontWeight.bold,
-            decoration: TextDecoration.underline,
-            color: Colors.black,
-          ),
+              fontWeight: FontWeight.bold, fontSize: 20, color: Colors.black),
         ),
         onTap: () => Navigator.of(context).push(MaterialPageRoute(
           builder: (context) => ImagePage(file: file),

@@ -1,5 +1,6 @@
 import 'dart:convert';
 import 'package:flutter/material.dart';
+import '../models/report.dart';
 import '../models/rb.dart';
 import '../models/user.dart';
 import 'package:http/http.dart' as http;
@@ -87,6 +88,51 @@ class RbProvider with ChangeNotifier {
     if (response.statusCode == 200) {
       var data = json.decode(response.body) as List;
       _rbs = data.map<Rb>((json) => Rb.fromJson(json)).toList();
+      notifyListeners();
+    }
+  }
+}
+
+class ReportProvider with ChangeNotifier {
+  ReportProvider() {
+    this.fetchreport();
+  }
+
+  List<Report> _reports = [];
+
+  List<Report> get reports {
+    return [..._reports];
+  }
+
+  void addReport(Report report) async {
+    final response = await http.post(
+        Uri.parse('http://smartreport.seoul.go.kr/a800/a801.do'),
+        headers: {"Content-Type": "application/json"},
+        body: json.encode(report));
+    if (response.statusCode == 201) {
+      report.key = json.decode(response.body)['key'];
+      _reports.add(report);
+      notifyListeners();
+    }
+  }
+
+  void deleteReport(Report report) async {
+    final response = await http.delete(Uri.parse(
+        'http://smartreport.seoul.go.kr/a800/a801.do/${report.key}/'));
+    if (response.statusCode == 204) {
+      _reports.remove(report);
+      notifyListeners();
+    }
+  }
+
+  fetchreport() async {
+    final Uri url =
+        Uri.parse("http://smartreport.seoul.go.kr/a800/a801.do/?format=json");
+    final response = await http.get(url);
+
+    if (response.statusCode == 200) {
+      var data = json.decode(response.body) as List;
+      _reports = data.map<Report>((json) => Report.fromJson(json)).toList();
       notifyListeners();
     }
   }

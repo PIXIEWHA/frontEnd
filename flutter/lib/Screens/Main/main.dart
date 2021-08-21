@@ -1,13 +1,62 @@
+import 'package:firebase_messaging/firebase_messaging.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter_local_notifications/flutter_local_notifications.dart';
 import 'package:pixie/Screens/Main/components/body.dart';
 import 'package:pixie/Screens/Pose/pose.dart';
 import 'package:pixie/Screens/Report/report.dart';
 import 'package:pixie/Screens/Video/video.dart';
 import 'package:pixie/Screens/Welcome/welcome_screen.dart';
 import 'package:pixie/constants.dart';
+import 'package:pixie/main.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 
-class MainScreen extends StatelessWidget {
+class MainScreen extends StatefulWidget {
+  MainScreen({Key? key}) : super(key: key);
+
+  @override
+  MainState createState() => MainState();
+}
+
+class MainState extends State<MainScreen> {
+  @override
+  void initState() {
+    super.initState();
+    FirebaseMessaging.onMessage.listen((RemoteMessage message) {
+      RemoteNotification? notification = message.notification;
+      AndroidNotification? android = message.notification?.android;
+
+      if (notification != null && android != null) {
+        flutterLocalNotificationsPlugin.show(
+            notification.hashCode,
+            notification.title,
+            notification.body,
+            NotificationDetails(
+              android: AndroidNotificationDetails(
+                  channel.id, channel.name, channel.description,
+                  color: Colors.blue, playSound: true),
+            ));
+      }
+    });
+
+    FirebaseMessaging.onMessageOpenedApp.listen((RemoteMessage message) {
+      RemoteNotification? notification = message.notification;
+      AndroidNotification? android = message.notification?.android;
+
+      if (notification != null && android != null) {
+        showDialog(
+            context: context,
+            builder: (_) {
+              return AlertDialog(
+                  title: Text(notification.title!),
+                  content: SingleChildScrollView(
+                      child: Column(
+                          crossAxisAlignment: CrossAxisAlignment.start,
+                          children: [Text(notification.body!)])));
+            });
+      }
+    });
+  }
+
   Future<void> storeLogout() async {
     SharedPreferences prefs = await SharedPreferences.getInstance();
 

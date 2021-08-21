@@ -1,7 +1,7 @@
 import 'package:flutter/material.dart';
-import 'package:pixie/Screens/FirebaseApi/FirebaseApi.dart';
-import 'package:pixie/Screens/FirebaseApi/FirebaseFile.dart';
-import 'package:pixie/Screens/FirebaseApi/ImagePage.dart';
+import 'package:pixie/api/FirebaseApi/FirebaseApi.dart';
+import 'package:pixie/api/FirebaseApi/FirebaseFile.dart';
+import 'package:pixie/api/FirebaseApi/ImagePage.dart';
 import 'package:pixie/Screens/Main/components/background.dart';
 import 'package:pixie/constants.dart';
 import 'package:shared_preferences/shared_preferences.dart';
@@ -10,11 +10,11 @@ import 'package:shared_preferences/shared_preferences.dart';
 class Body extends StatelessWidget {
   get future => null;
 
-  Future<List<FirebaseFile>> getAccount() async {
+  Future<List<FirebaseFile>> getIP() async {
     SharedPreferences prefs = await SharedPreferences.getInstance();
-    String? account = prefs.getString('account');
-    if (account != null) {
-      return FirebaseApi.listAll('/' + account);
+    String? rb_id = prefs.getString('rb_id');
+    if (rb_id != null) {
+      return FirebaseApi.listAll('/' + rb_id);
     }
     return FirebaseApi.listAll('/');
   }
@@ -29,6 +29,7 @@ class Body extends StatelessWidget {
     return Background(
       child: SingleChildScrollView(
         child: Column(
+          mainAxisAlignment: MainAxisAlignment.center,
           children: <Widget>[
             AppBar(
               title: Text("YOLOv5 영상 확인"),
@@ -36,7 +37,7 @@ class Body extends StatelessWidget {
               backgroundColor: kPrimaryColor,
             ),
             FutureBuilder<List<FirebaseFile>>(
-              future: getAccount(),
+              future: getIP(),
               builder: (context, snapshot) {
                 switch (snapshot.connectionState) {
                   case ConnectionState.waiting:
@@ -82,13 +83,15 @@ class Body extends StatelessWidget {
           file.name,
           style: TextStyle(
             fontWeight: FontWeight.bold,
-            decoration: TextDecoration.underline,
+            fontSize: 20,
             color: Colors.black,
           ),
         ),
-        onTap: () => Navigator.of(context).push(MaterialPageRoute(
-          builder: (context) => ImagePage(file: file),
-        )),
+        onTap: () => Navigator.push(
+            context,
+            MaterialPageRoute(
+              builder: (context) => ImagePage(file: file),
+            )),
       );
 
   Widget buildHeader(int length) => ListTile(
