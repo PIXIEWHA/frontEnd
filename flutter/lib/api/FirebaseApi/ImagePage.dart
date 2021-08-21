@@ -42,7 +42,7 @@ class _VideoPlayer extends State<ImagePage> {
               ScaffoldMessenger.of(context).showSnackBar(snackBar);
             },
           ),
-          IconButton(
+          /*IconButton(
             icon: Icon(Icons.file_download),
             onPressed: () async {
               await FirebaseApi.downloadFile(file.ref);
@@ -52,7 +52,7 @@ class _VideoPlayer extends State<ImagePage> {
               );
               ScaffoldMessenger.of(context).showSnackBar(snackBar);
             },
-          ),
+          ),*/
           const SizedBox(width: 12),
         ],
       ),

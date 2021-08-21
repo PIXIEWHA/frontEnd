@@ -14,7 +14,7 @@ class Body extends StatelessWidget {
     SharedPreferences prefs = await SharedPreferences.getInstance();
     String? rb_id = prefs.getString('rb_id');
     if (rb_id != null) {
-      return FirebaseApi.listAll('/' + rb_id);
+      return FirebaseApi.listAll('/' + rb_id + 'openpose');
     }
     return FirebaseApi.listAll('/');
   }
@@ -50,7 +50,7 @@ class Body extends StatelessWidget {
                           child: Column(
                               crossAxisAlignment: CrossAxisAlignment.start,
                               children: [
-                                SizedBox(height: size.height * 0.12),
+                                SizedBox(height: 60),
                                 buildHeader(files.length),
                                 Expanded(
                                   child: ListView.builder(

@@ -14,7 +14,7 @@ class Body extends StatelessWidget {
     SharedPreferences prefs = await SharedPreferences.getInstance();
     String? rb_id = prefs.getString('rb_id');
     if (rb_id != null) {
-      return FirebaseApi.listAll('/' + rb_id);
+      return FirebaseApi.listAll('/' + rb_id + 'yolo');
     }
     return FirebaseApi.listAll('/');
   }
@@ -26,6 +26,7 @@ class Body extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     Size size = MediaQuery.of(context).size;
+    print(size.height);
     return Background(
       child: SingleChildScrollView(
         child: Column(
@@ -51,7 +52,7 @@ class Body extends StatelessWidget {
                           child: Column(
                               crossAxisAlignment: CrossAxisAlignment.start,
                               children: [
-                                SizedBox(height: size.height * 0.12),
+                                SizedBox(height: 60),
                                 buildHeader(files.length),
                                 Expanded(
                                   child: ListView.builder(
