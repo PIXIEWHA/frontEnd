@@ -34,7 +34,9 @@ Future<void> main() async {
       ?.createNotificationChannel(channel);
 
   FirebaseMessaging.onBackgroundMessage(_firebaseMessagingBackgroundHandler);
+
   // FCM 토큰 cBRwgIapRVyv7r4t5CfekZ:APA91bH-K3PutC9OECT-29Knkh-QLybNCC9_38KjC0N5P3rDL83c4AJLwEOhoWU5kpP-8ge3RXOAlms0f9khMiNE2bkSj5kBDueSxRPHdQdsitxGPizrTiPWsSys43ZwBRiHlM41NlCr
+  
   runApp(MyApp());
 }
 
