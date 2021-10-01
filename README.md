@@ -1,7 +1,9 @@
 ## 📁 디렉토리 구조
 ```
 flutter/lib
-├── Screens/
+├── main.dart                                          - 첫 실행
+├── components.dart
+├── Screens/                                           - 페이지
 │   ├── Welcome                                        - 첫 페이지
 │   │   ├── components                                 - body, background.dart
 │   │   └── main.dart                                  - 페이지 실행
@@ -23,7 +25,7 @@ flutter/lib
 │   ├── rb.dart                                        - 라즈베리파이
 │   ├── report.dart                                    - 신고
 │   ├── reportweb.dart                                 - api신고
-│   └── user.dart                                      - 사용자
-├── .gitignore
-└── README.md
+└── └── user.dart                                      - 사용자
+
+
 ```
