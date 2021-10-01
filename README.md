@@ -29,3 +29,7 @@ flutter/lib
 
 
 ```
+## 😀 개발 규칙
+1. pull 필수
+2. 각자 branch에서 커밋하기
+3. pull request 후 main branch에 merge 하기
