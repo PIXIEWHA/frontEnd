@@ -33,3 +33,5 @@ flutter/lib
 1. 각자 branch에서 커밋하기
 2. pull request 후 main branch에 merge 하기
 3. main branch를 본인 branch에 merge 한 후, 이어서 
+
+
