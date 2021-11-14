@@ -1,5 +1,5 @@
 ## 📲 무단 투기 감시 어플
-Flutter & Django
+dart언어를 이용해 프론트엔드는 Flutter, python을 이용해 백엔드는 Django로 개발하였습니다.
 
 ## 📁 디렉토리 구조
 ```
