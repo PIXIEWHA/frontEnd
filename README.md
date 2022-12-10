@@ -36,7 +36,7 @@
 
 | <div align="center"/>기능                      | <div align="center"/>내용                |
 | :------------------------ | :--------------------------------- |
-| <div align="center"/>🔗[**프론트엔드**](https://github.com/yhyeonjg/frontEnd)|- 라즈베리파이 IP 등록<br/>- Firebase 서버에 있는 무단 투기 영상 확인 및 알림<br/>- URL 복사하여 편리하게 무단 투기 신고|
+| <div align="center"/>🔗[**프론트엔드**](https://github.com/yhyeonjg/frontEnd)|- 라즈베리파이 IP 등록<br/>- Firebase 서버에 있는 무단 투기 영상 확인 및 알림<br/>- URL 복사하여 OpenAPI로 무단 투기 신고|
 | <div align="center"/>🔗[**백엔드**](https://github.com/yhyeonjg/backEnd)|- aws에 회원정보 저장<br/>- 라즈베리파이 IP 관리<br/>- Firebase 영상 관리|
       
 <br /><br/>
